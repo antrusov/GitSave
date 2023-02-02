@@ -11,18 +11,18 @@
 
             <Grid ColumnDefinitions="150, *" RowDefinitions="*, 6, *" Margin="0,0,0,6" ShowGridLines="False">
                 <!-- Новый коммит -->
-                <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="New (ctrl+N)" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Text="{Binding Comment}" Margin="4,0,0,0" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="0" Grid.Column="1"/>
+                <Button Command="{Binding NewCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="New (ctrl+N)" Grid.Row="0" Grid.Column="0" HotKey="Ctrl+N" />
+                <TextBox Text="{Binding NewComment}" Margin="4,0,0,0" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="0" Grid.Column="1"/>
 
                 <!-- Последний коммит -->
                 <Grid RowDefinitions="Auto, 4, *"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     Grid.Row="3" Grid.Column="0">
-                    <Button Grid.Row="0" HorizontalAlignment="Stretch" Content="Update (ctrl+U)" />
-                    <Button Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Reset (ctrl+R)" />
+                    <Button Grid.Row="0" Command="{Binding UpdateCommand}" HorizontalAlignment="Stretch" Content="Update (ctrl+U)" HotKey="Ctrl+U" />
+                    <Button Grid.Row="2" Command="{Binding ResetCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Reset (ctrl+R)" HotKey="Ctrl+R" />
                 </Grid>
 
-                <TextBox Text="{Binding Comment}" Margin="4,0,0,0" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="3" Grid.Column="1"/>
+                <TextBox Text="{Binding LastComment}" Margin="4,0,0,0" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="3" Grid.Column="1"/>
             </Grid>
 
         </TabItem>
