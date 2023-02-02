@@ -8,6 +8,16 @@ namespace GitSave.ViewModels;
 
 public class MainWindowViewModel : ReactiveObject
 {
+    //Comment
+    private string? _Comment;
+
+    public string? Comment
+    {
+        get => _Comment;
+        set => this.RaiseAndSetIfChanged(ref _Comment, value);
+    }
+
+    //commits
     public ObservableCollection<Commit> Commits { get; } = new ObservableCollection<Commit>(GenerateMockCommitTable());
 
     static IEnumerable<Commit> GenerateMockCommitTable()

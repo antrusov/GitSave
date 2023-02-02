@@ -6,10 +6,13 @@
         x:Class="GitSave.MainWindow"
         Title="GitSave">
 
-    <Grid ColumnDefinitions="200, *" RowDefinitions="*, Auto" Margin="4" ShowGridLines="False">
+    <Grid ColumnDefinitions="150, *" RowDefinitions="*, 6, Auto, 6, Auto" Margin="4" ShowGridLines="False">
         
         <!-- коммиты -->
-        <DataGrid Items="{Binding Commits}" Margin="0,0,0,4" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+        <DataGrid Items="{Binding Commits}"
+                  IsReadOnly="True"
+                  CanUserSortColumns="False"
+                  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="UUID" 
                                     Binding="{Binding UUID}" 
@@ -23,15 +26,19 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- управляющие кнопки -->
-        <StackPanel Orientation="Vertical" Spacing="5" Grid.Row="1" Grid.Column="0">
-            <Button HorizontalAlignment="Stretch" Content="Save (ctrl+S)" />
-            <Button HorizontalAlignment="Stretch" Content="Update (ctrl+U)" />
-            <Button HorizontalAlignment="Stretch" Content="Load (ctrl+L)" />
-        </StackPanel>
+        <!-- Новый коммит -->
+        <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Save new (ctrl+S)" Grid.Row="2" Grid.Column="0"/>
+        <TextBox Text="{Binding Comment}" Margin="4,0,0,0" Height="200" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="2" Grid.Column="1"/>
 
-        <!-- комментарий к коммиту -->
-        <TextBox Text="Comment" Margin="4,0,0,0" Height="200" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1"/>
+        <!-- Последний коммит -->
+        <Grid RowDefinitions="*, 4, *"
+              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+              Grid.Row="4" Grid.Column="0">
+            <Button Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Update last (ctrl+U)" />
+            <Button Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Load last (ctrl+L)" />
+        </Grid>
+
+        <TextBox Text="{Binding Comment}" Margin="4,0,0,0" Height="200" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="4" Grid.Column="1"/>
 
     </Grid>
 
