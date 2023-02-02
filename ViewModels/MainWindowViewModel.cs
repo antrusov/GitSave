@@ -40,6 +40,294 @@ public class MainWindowViewModel : ReactiveObject
                     Email = "Email2",
                     Created = DateTime.Now.AddMinutes(-5),
                 },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
+                new Commit()
+                {
+                    UUID = "123",
+                    Comment = "Comment1",
+                    Login = "Login1",
+                    Email = "Email1",
+                    Created = DateTime.Now,
+                },
+                new Commit()
+                {
+                    UUID = "456",
+                    Comment = "Comment2",
+                    Login = "Login2",
+                    Email = "Email2",
+                    Created = DateTime.Now.AddMinutes(-5),
+                },
             };
 
             return defaultCommit;

@@ -6,40 +6,47 @@
         x:Class="GitSave.MainWindow"
         Title="GitSave">
 
-    <Grid ColumnDefinitions="150, *" RowDefinitions="*, 6, Auto, 6, Auto" Margin="4" ShowGridLines="False">
-        
-        <!-- коммиты -->
-        <DataGrid Items="{Binding Commits}"
-                  IsReadOnly="True"
-                  CanUserSortColumns="False"
-                  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="UUID" 
-                                    Binding="{Binding UUID}" 
-                                    Width="*" />
-                <DataGridTextColumn Header="Created" 
-                                    Binding="{Binding Created}" 
-                                    Width="*" />
-                <DataGridTextColumn Header="Comment" 
-                                    Binding="{Binding Comment}" 
-                                    Width="5*" />
-            </DataGrid.Columns>
-        </DataGrid>
+    <TabControl>
+        <TabItem Header="Save">
 
-        <!-- Новый коммит -->
-        <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Save new (ctrl+S)" Grid.Row="2" Grid.Column="0"/>
-        <TextBox Text="{Binding Comment}" Margin="4,0,0,0" Height="200" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="2" Grid.Column="1"/>
+            <Grid ColumnDefinitions="150, *" RowDefinitions="*, 6, *" Margin="0,0,0,6" ShowGridLines="False">
+                <!-- Новый коммит -->
+                <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="New (ctrl+N)" Grid.Row="0" Grid.Column="0"/>
+                <TextBox Text="{Binding Comment}" Margin="4,0,0,0" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="0" Grid.Column="1"/>
 
-        <!-- Последний коммит -->
-        <Grid RowDefinitions="*, 4, *"
-              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-              Grid.Row="4" Grid.Column="0">
-            <Button Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Update last (ctrl+U)" />
-            <Button Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Load last (ctrl+L)" />
-        </Grid>
+                <!-- Последний коммит -->
+                <Grid RowDefinitions="Auto, 4, *"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Grid.Row="3" Grid.Column="0">
+                    <Button Grid.Row="0" HorizontalAlignment="Stretch" Content="Update (ctrl+U)" />
+                    <Button Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Reset (ctrl+R)" />
+                </Grid>
 
-        <TextBox Text="{Binding Comment}" Margin="4,0,0,0" Height="200" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="4" Grid.Column="1"/>
+                <TextBox Text="{Binding Comment}" Margin="4,0,0,0" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="3" Grid.Column="1"/>
+            </Grid>
 
-    </Grid>
+        </TabItem>
+
+        <TabItem Header="List">
+
+            <!-- коммиты -->
+            <DataGrid Items="{Binding Commits}"
+                    IsReadOnly="True"
+                    CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="UUID" 
+                                        Binding="{Binding UUID}" 
+                                        Width="*" />
+                    <DataGridTextColumn Header="Created" 
+                                        Binding="{Binding Created}" 
+                                        Width="*" />
+                    <DataGridTextColumn Header="Comment" 
+                                        Binding="{Binding Comment}" 
+                                        Width="5*" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </TabItem>
+    </TabControl>
 
 </Window>
