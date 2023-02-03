@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using GitSave.Models;
 using ReactiveUI;
 
@@ -80,15 +81,15 @@ public class MainWindowViewModel : ReactiveObject
 
     public async Task OnSetWorkFolder()
     {
-        /*
-        OpenFileDialog dialog = new OpenFileDialog
+        OpenFolderDialog dialog = new OpenFolderDialog
         {
-            Title = "Title",
-            Filters = new List<FileDialogFilter> {  }
+            Title = "Select work folder"
         };
 
-        string[] files = await dialog.ShowAsync(Application.Current.MainWindow);
-        */
+        if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            WorkFolder = await dialog.ShowAsync(desktop.MainWindow);
+        }
     }
 
     static IEnumerable<Commit> GenerateMockCommitTable()
