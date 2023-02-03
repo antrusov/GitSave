@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using GitSave.Models;
+using GitSave.Tools;
 using ReactiveUI;
 
 namespace GitSave.ViewModels;
@@ -77,7 +78,10 @@ public class MainWindowViewModel : ReactiveObject
 
     public async Task OnUpdate(string? comment) => NewComment = "2";
 
-    public async Task OnReset() => NewComment = "3";
+    public async Task OnReset()
+    {
+        LastComment = await Cmd.Run("git status", WorkFolder);
+    }
 
     public async Task OnSetWorkFolder()
     {
