@@ -80,7 +80,8 @@ public class MainWindowViewModel : ReactiveObject
 
     public async Task OnReset()
     {
-        LastComment = await Cmd.Run("git status", WorkFolder);
+        //LastComment = await Cmd.Run("git status", WorkFolder);
+        LastComment = await Cmd.Run("git log --pretty=format:\"%h, %an, %ad : %s\"", WorkFolder);
     }
 
     public async Task OnSetWorkFolder()

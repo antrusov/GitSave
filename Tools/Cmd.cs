@@ -14,7 +14,12 @@ public static class Cmd
         {
             ProcessStartInfo procStartInfo = new ProcessStartInfo("cmd", "/c " + command);
 
-            procStartInfo.RedirectStandardError = procStartInfo.RedirectStandardInput = procStartInfo.RedirectStandardOutput = true;
+            procStartInfo.RedirectStandardError =
+            procStartInfo.RedirectStandardInput =
+            procStartInfo.RedirectStandardOutput = true;
+            procStartInfo.StandardInputEncoding =
+            procStartInfo.StandardErrorEncoding =
+            procStartInfo.StandardOutputEncoding = Encoding.UTF8;
             procStartInfo.UseShellExecute = false;
             procStartInfo.CreateNoWindow = true;
             if (null != workingDirectory)
