@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls;
 using GitSave.Models;
 using ReactiveUI;
 
@@ -25,6 +28,10 @@ public class MainWindowViewModel : ReactiveObject
             ReactiveCommand.Create<string?>(comment => OnUpdate(comment), canExecuteNewCommand);
 
         ResetCommand = ReactiveCommand.Create(OnReset);
+
+        SetWorkFolderCommand = ReactiveCommand.Create(OnSetWorkFolder);
+
+        WorkFolder = Directory.GetCurrentDirectory();
     }
 
     #region [ Properties ]
@@ -43,6 +50,13 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _LastComment, value);
     }
 
+    private string? _WorkFolder;
+    public string? WorkFolder
+    {
+        get => _WorkFolder;
+        set => this.RaiseAndSetIfChanged(ref _WorkFolder, value);
+    }
+
     public ObservableCollection<Commit> Commits { get; } = new ObservableCollection<Commit>(GenerateMockCommitTable());
 
     #endregion
@@ -52,6 +66,7 @@ public class MainWindowViewModel : ReactiveObject
     public ICommand NewCommand { get; }
     public ICommand UpdateCommand { get; }
     public ICommand ResetCommand { get; }
+    public ICommand SetWorkFolderCommand { get; }
 
     #endregion
 
@@ -62,6 +77,19 @@ public class MainWindowViewModel : ReactiveObject
     public async Task OnUpdate(string? comment) => NewComment = "2";
 
     public async Task OnReset() => NewComment = "3";
+
+    public async Task OnSetWorkFolder()
+    {
+        /*
+        OpenFileDialog dialog = new OpenFileDialog
+        {
+            Title = "Title",
+            Filters = new List<FileDialogFilter> {  }
+        };
+
+        string[] files = await dialog.ShowAsync(Application.Current.MainWindow);
+        */
+    }
 
     static IEnumerable<Commit> GenerateMockCommitTable()
     {

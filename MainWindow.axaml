@@ -47,6 +47,13 @@
             </DataGrid>
 
         </TabItem>
+
+        <TabItem Header="Settings">
+            <Grid ColumnDefinitions="Auto,6,*" RowDefinitions="Auto" ShowGridLines="False">
+                <Button Content="Set work folder..." Command="{Binding SetWorkFolderCommand}" Grid.Column="0" />
+                <TextBox Watermark="Work folder" IsReadOnly="True" Text="{Binding WorkFolder}" Grid.Column="2"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 
 </Window>
