@@ -21,9 +21,9 @@ public class MainWindowViewModel : ReactiveObject
         IObservable<bool> canExecuteNewCommand = this.WhenAnyValue(vm => vm.NewComment, (comment) => !string.IsNullOrEmpty(comment));
         IObservable<bool> canExecuteUpdateCommand = this.WhenAnyValue(vm => vm.LastComment, (comment) => !string.IsNullOrEmpty(comment));
 
-        NewCommand = ReactiveCommand.Create<string?>(comment => OnNew(comment), canExecuteNewCommand);
+        NewCommand = ReactiveCommand.Create(OnNew, canExecuteNewCommand);
         RefreshCommand = ReactiveCommand.Create(OnRefresh);
-        UpdateCommand = ReactiveCommand.Create<string?>(comment => OnUpdate(comment), canExecuteNewCommand);
+        UpdateCommand = ReactiveCommand.Create(OnUpdate, canExecuteUpdateCommand);
         ResetCommand = ReactiveCommand.Create(OnReset);
         SetWorkFolderCommand = ReactiveCommand.Create(OnSetWorkFolder);
 
@@ -69,15 +69,32 @@ public class MainWindowViewModel : ReactiveObject
 
     #region [ Helpers ]
 
-    public async Task OnNew(string? comment) => NewComment = "1";
-    public async Task OnRefresh() => await LoadCommits();
+    public async Task OnNew()
+    {
+        await Git.New(NewComment, WorkFolder);
+        await LoadCommits();
+        NewComment = "";
+    }
+    
+    public async Task OnRefresh()
+    {
+        await LoadCommits();
+        NewComment = "";
+    }
 
-    public async Task OnUpdate(string? comment) => NewComment = "2";
+    public async Task OnUpdate()
+    {
+        NewComment = "";
+        await Git.Update(LastComment, WorkFolder);
+        //Commits[0].Comment = LastComment;
+        await LoadCommits();
+    }
 
     public async Task OnReset()
     {
-        //LastComment = await Cmd.Run("git status", WorkFolder);
-        LastComment = await Cmd.Run("git log --pretty=format:\"%h, %an, %ad : %s\"", WorkFolder);
+        await Git.Reset(WorkFolder);
+        NewComment = "";
+        LastComment = await Git.LastComment(WorkFolder);
     }
 
     public async Task OnSetWorkFolder()
@@ -102,6 +119,8 @@ public class MainWindowViewModel : ReactiveObject
 
         foreach(var commit in list)
             Commits.Add(commit);
+
+        LastComment = await Git.LastComment(WorkFolder);
     }
 
     #endregion
