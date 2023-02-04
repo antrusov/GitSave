@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using GitSave.Models;
@@ -57,14 +58,19 @@ public static class Git
     #region [ new commit ]
 
     const string GitAddFiles = "git add .";
-    const string GitCommit = "git commit -m '{0}'";
+    const string GitCommit = "git commit -F {0}";
 
     public static async Task New(string comment, string root)
     {
         await Cmd.Run(GitAddFiles, root);
-        var cmd = string.Format(GitCommit, comment);
+
+        var file = Path.GetTempFileName();
+        await File.WriteAllTextAsync(file, comment);
+
+        var cmd = string.Format(GitCommit, file);
         var res = await Cmd.Run(cmd, root);
-        int i=1;
+
+        File.Delete(file);
     }
 
     #endregion
