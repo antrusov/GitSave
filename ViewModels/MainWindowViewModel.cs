@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input;
 using GitSave.Models;
 using GitSave.Tools;
 using ReactiveUI;
@@ -17,20 +18,13 @@ public class MainWindowViewModel : ReactiveObject
 {
     public MainWindowViewModel()
     {
-        IObservable<bool> canExecuteNewCommand =
-            this.WhenAnyValue(vm => vm.NewComment, (comment) => !string.IsNullOrEmpty(comment));
+        IObservable<bool> canExecuteNewCommand = this.WhenAnyValue(vm => vm.NewComment, (comment) => !string.IsNullOrEmpty(comment));
+        IObservable<bool> canExecuteUpdateCommand = this.WhenAnyValue(vm => vm.LastComment, (comment) => !string.IsNullOrEmpty(comment));
 
-        IObservable<bool> canExecuteUpdateCommand =
-            this.WhenAnyValue(vm => vm.LastComment, (comment) => !string.IsNullOrEmpty(comment));
-
-        NewCommand =
-            ReactiveCommand.Create<string?>(comment => OnNew(comment), canExecuteNewCommand);
-
-        UpdateCommand =
-            ReactiveCommand.Create<string?>(comment => OnUpdate(comment), canExecuteNewCommand);
-
+        NewCommand = ReactiveCommand.Create<string?>(comment => OnNew(comment), canExecuteNewCommand);
+        RefreshCommand = ReactiveCommand.Create(OnRefresh);
+        UpdateCommand = ReactiveCommand.Create<string?>(comment => OnUpdate(comment), canExecuteNewCommand);
         ResetCommand = ReactiveCommand.Create(OnReset);
-
         SetWorkFolderCommand = ReactiveCommand.Create(OnSetWorkFolder);
 
         WorkFolder = Directory.GetCurrentDirectory();
@@ -59,13 +53,14 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _WorkFolder, value);
     }
 
-    public ObservableCollection<Commit> Commits { get; } = new ObservableCollection<Commit>(GenerateMockCommitTable());
+    public ObservableCollection<Commit> Commits { get; } = new ObservableCollection<Commit>();
 
     #endregion
 
     #region [ Commands ]
 
     public ICommand NewCommand { get; }
+    public ICommand RefreshCommand { get; }
     public ICommand UpdateCommand { get; }
     public ICommand ResetCommand { get; }
     public ICommand SetWorkFolderCommand { get; }
@@ -75,6 +70,7 @@ public class MainWindowViewModel : ReactiveObject
     #region [ Helpers ]
 
     public async Task OnNew(string? comment) => NewComment = "1";
+    public async Task OnRefresh() => await LoadCommits();
 
     public async Task OnUpdate(string? comment) => NewComment = "2";
 
@@ -94,320 +90,18 @@ public class MainWindowViewModel : ReactiveObject
         if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             WorkFolder = await dialog.ShowAsync(desktop.MainWindow);
+            await LoadCommits();
         }
     }
 
-    static IEnumerable<Commit> GenerateMockCommitTable()
+    async Task LoadCommits ()
     {
-            var defaultCommit = new List<Commit>()
-            {
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-                new Commit()
-                {
-                    UUID = "123",
-                    Comment = "Comment1",
-                    Login = "Login1",
-                    Email = "Email1",
-                    Created = DateTime.Now,
-                },
-                new Commit()
-                {
-                    UUID = "456",
-                    Comment = "Comment2",
-                    Login = "Login2",
-                    Email = "Email2",
-                    Created = DateTime.Now.AddMinutes(-5),
-                },
-            };
+        Commits.Clear();
 
-            return defaultCommit;
+        var list = await Git.GetCommits(WorkFolder);
+
+        foreach(var commit in list)
+            Commits.Add(commit);
     }
 
     #endregion

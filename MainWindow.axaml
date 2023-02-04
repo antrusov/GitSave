@@ -11,7 +11,12 @@
 
             <Grid ColumnDefinitions="150, *" RowDefinitions="*, 6, *" Margin="0,0,0,6" ShowGridLines="False">
                 <!-- Новый коммит -->
-                <Button Command="{Binding NewCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="New (ctrl+N)" Grid.Row="0" Grid.Column="0" HotKey="Ctrl+N" />
+                <Grid RowDefinitions="*, 4, Auto"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Grid.Row="0" Grid.Column="0">
+                    <Button Grid.Row="0" Command="{Binding NewCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="New (ctrl+N)" HotKey="Ctrl+N" />
+                    <Button Grid.Row="2" Command="{Binding RefreshCommand}" HorizontalAlignment="Stretch" Content="Refresh (F5)" HotKey="F5" />
+                </Grid>
                 <TextBox Text="{Binding NewComment}" Margin="4,0,0,0" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="0" Grid.Column="1"/>
 
                 <!-- Последний коммит -->
