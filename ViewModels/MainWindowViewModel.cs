@@ -32,6 +32,13 @@ public class MainWindowViewModel : ReactiveObject
 
     #region [ Properties ]
 
+    private int _Limit = 25;
+    public int Limit
+    {
+        get => _Limit;
+        set => this.RaiseAndSetIfChanged(ref _Limit, value);
+    }
+
     private string? _NewComment;
     public string? NewComment
     {
@@ -115,7 +122,7 @@ public class MainWindowViewModel : ReactiveObject
     {
         Commits.Clear();
 
-        var list = await Git.GetCommits(WorkFolder);
+        var list = await Git.GetCommits(Limit, WorkFolder);
 
         foreach(var commit in list)
             Commits.Add(commit);

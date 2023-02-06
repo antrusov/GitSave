@@ -13,13 +13,17 @@ public static class Git
 
     const char GitLogCommitSeparator = '¶';
     const string GitLogLineSeparator = "\r\n";
-    const string GitLog = $"git log --pretty=format:\"%h¶%an¶%ad¶%s\"";
+    const string GitLog = "git log --pretty=format:\"%h¶%an¶%ad¶%s\" -n {0}";
 
-    public static async Task<IEnumerable<Commit>> GetCommits(string root)
+    public static async Task<IEnumerable<Commit>> GetCommits(int limit, string root)
     {
         try
         {
-            var commits = await Cmd.Run(GitLog, root);
+            limit = limit <= 0 ? 1 : limit;
+            limit = limit > 100 ? 100 : limit;
+
+            var cmd = string.Format(GitLog, limit);
+            var commits = await Cmd.Run(cmd, root);
 
             if (commits.StartsWith("Error"))
                 return Enumerable.Empty<Commit>();
@@ -65,10 +69,10 @@ public static class Git
         await Cmd.Run(GitAddFiles, root);
 
         var file = Path.GetTempFileName();
-        await File.WriteAllTextAsync(file, comment);
+        await File.WriteAllTextAsync(file, comment.Trim());
 
         var cmd = string.Format(GitCommit, file);
-        var res = await Cmd.Run(cmd, root);
+        await Cmd.Run(cmd, root);
 
         File.Delete(file);
     }
@@ -78,12 +82,19 @@ public static class Git
     #region [ update the last commit ]    
 
     const string GitAddFilesAmend = "git add .";
-    const string GitCommitAmend = "git commit --amend -m\"{0}\"";
+    const string GitCommitAmend = "git commit --amend -F {0}";
 
     public static async Task Update(string comment, string root)
     {
         await Cmd.Run(GitAddFilesAmend, root);
-        await Cmd.Run(string.Format(GitCommitAmend, comment), root);
+
+        var file = Path.GetTempFileName();
+        await File.WriteAllTextAsync(file, comment.Trim());
+
+        var cmd = string.Format(GitCommitAmend, file);
+        await Cmd.Run(cmd, root);
+
+        File.Delete(file);
     }
 
     #endregion

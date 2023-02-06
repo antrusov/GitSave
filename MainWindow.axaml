@@ -54,9 +54,14 @@
         </TabItem>
 
         <TabItem Header="Settings">
-            <Grid ColumnDefinitions="Auto,6,*" RowDefinitions="Auto" ShowGridLines="False">
+            <Grid ColumnDefinitions="Auto,6,*" RowDefinitions="Auto,Auto" ShowGridLines="False">
                 <Button Content="Set work folder..." Command="{Binding SetWorkFolderCommand}" Grid.Column="0" />
                 <TextBox Watermark="Work folder" IsReadOnly="True" Text="{Binding WorkFolder}" Grid.Column="2"/>
+                <NumericUpDown Minimum="10" Maximum="100" Increment="1" Value="{Binding Limit}"
+                       VerticalAlignment="Center"
+                       Grid.Column="0" Grid.Row="1"
+                       ToolTip.Tip="Commits limit"
+                       />
             </Grid>
         </TabItem>
     </TabControl>
