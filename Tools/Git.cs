@@ -94,7 +94,7 @@ public static class Git
 
     public static async Task<string> LastComment(string root)
     {
-        return await Cmd.Run(GitLastFullComment, root);
+        return (await Cmd.Run(GitLastFullComment, root)).Trim();
     }
 
     #endregion
