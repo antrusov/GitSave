@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using GitSave.Models;
 using GitSave.Tools;
 using ReactiveUI;
@@ -26,6 +28,7 @@ public class MainWindowViewModel : ReactiveObject
         UpdateCommand = ReactiveCommand.Create(OnUpdate, canExecuteUpdateCommand);
         ResetCommand = ReactiveCommand.Create(OnReset);
         SetWorkFolderCommand = ReactiveCommand.Create(OnSetWorkFolder);
+        ResetToCommit = ReactiveCommand.Create(OnResetToCommit);
 
         WorkFolder = Directory.GetCurrentDirectory();
     }
@@ -53,6 +56,13 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _LastComment, value);
     }
 
+    private Commit? _SelectedCommit;
+    public Commit? SelectedCommit
+    {
+        get => _SelectedCommit;
+        set => this.RaiseAndSetIfChanged(ref _SelectedCommit, value);
+    }
+
     private string? _WorkFolder;
     public string? WorkFolder
     {
@@ -71,6 +81,7 @@ public class MainWindowViewModel : ReactiveObject
     public ICommand UpdateCommand { get; }
     public ICommand ResetCommand { get; }
     public ICommand SetWorkFolderCommand { get; }
+    public ICommand ResetToCommit { get; }
 
     #endregion
 
@@ -116,6 +127,11 @@ public class MainWindowViewModel : ReactiveObject
             WorkFolder = await dialog.ShowAsync(desktop.MainWindow);
             await LoadCommits();
         }
+    }
+
+    public async Task OnResetToCommit()
+    {
+        Console.WriteLine($"Commit UUID: {SelectedCommit.UUID}");
     }
 
     async Task LoadCommits ()
