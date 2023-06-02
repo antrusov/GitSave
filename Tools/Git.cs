@@ -13,7 +13,8 @@ public static class Git
 
     const char GitLogCommitSeparator = '¶';
     const string GitLogLineSeparator = "\r\n";
-    const string GitLog = "git log --pretty=format:\"%h¶%an¶%ad¶%s\" -n {0}";
+    const string GitHead = "HEAD -> master";
+    const string GitLog = "git log --reflog --pretty=format:\"%h¶%an¶%ad¶%s¶%D\" -n {0}";
 
     public static async Task<IEnumerable<Commit>> GetCommits(int limit, string root)
     {
@@ -36,7 +37,8 @@ public static class Git
                         UUID = parts[0],
                         Login = parts[1],
                         Created = parts[2],
-                        Comment = parts[3]
+                        Comment = parts[3],
+                        Head = parts[4] == GitHead
                     };
                 });
         }
@@ -109,4 +111,17 @@ public static class Git
     }
 
     #endregion
+
+    #region [ return to last commit ]
+
+    const string GitResetToCommit = "git reset --hard {0}";
+
+    public static async Task ResetToCommit(string commitUUID, string root)
+    {
+        string cmd = string.Format(GitResetToCommit, commitUUID);
+        await Cmd.Run(cmd, root);
+    }
+
+    #endregion
+
 }

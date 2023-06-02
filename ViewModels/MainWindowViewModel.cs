@@ -13,6 +13,8 @@ using Avalonia.Interactivity;
 using GitSave.Models;
 using GitSave.Tools;
 using ReactiveUI;
+using MessageBox.Avalonia.DTO;
+using MessageBoxAvaloniaEnums = MessageBox.Avalonia.Enums;
 
 namespace GitSave.ViewModels;
 
@@ -130,8 +132,30 @@ public class MainWindowViewModel : ReactiveObject
     }
 
     public async Task OnResetToCommit()
-    {
-        Console.WriteLine($"Commit UUID: {SelectedCommit.UUID}");
+    {        
+
+        if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            //dialog
+            var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                new MessageBoxStandardParams
+                {
+                    ButtonDefinitions = MessageBoxAvaloniaEnums.ButtonEnum.OkAbort,
+                    ContentHeader = $"Reset to commit {SelectedCommit.UUID}",
+                    ContentMessage = $"{SelectedCommit.Comment}"
+                });
+
+            //confirmation
+            var res = await messageBoxStandardWindow.ShowDialog(desktop.MainWindow);
+
+            //reset to commit
+            if (res == MessageBoxAvaloniaEnums.ButtonResult.Ok)
+            {
+                await Git.ResetToCommit(SelectedCommit.UUID, WorkFolder);
+                await LoadCommits();
+                NewComment = "";
+            }
+        }
     }
 
     async Task LoadCommits ()

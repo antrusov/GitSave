@@ -44,6 +44,7 @@
                     bhv:DoubleTappedBehav.Command="{Binding ResetToCommit}"
                     SelectedItem="{Binding SelectedCommit}">
                 <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding Head}"/>
                     <DataGridTextColumn Header="UUID" 
                                         Binding="{Binding UUID}" 
                                         Width="*" />
