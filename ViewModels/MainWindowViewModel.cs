@@ -15,6 +15,7 @@ using GitSave.Tools;
 using ReactiveUI;
 using MessageBox.Avalonia.DTO;
 using MessageBoxAvaloniaEnums = MessageBox.Avalonia.Enums;
+using System.Reactive.Linq;
 
 namespace GitSave.ViewModels;
 
@@ -31,6 +32,16 @@ public class MainWindowViewModel : ReactiveObject
         ResetCommand = ReactiveCommand.Create(OnReset);
         SetWorkFolderCommand = ReactiveCommand.Create(OnSetWorkFolder);
         ResetToCommit = ReactiveCommand.Create(OnResetToCommit);
+
+        this
+            .WhenAnyValue(
+                vm => vm.ShowAllCommits,
+                vm => vm.Limit,
+                (all, limit) => (all, limit))
+            .Throttle(TimeSpan.FromSeconds(0.8))
+            .DistinctUntilChanged()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await LoadCommits());
 
         WorkFolder = Directory.GetCurrentDirectory();
     }
@@ -70,6 +81,16 @@ public class MainWindowViewModel : ReactiveObject
     {
         get => _WorkFolder;
         set => this.RaiseAndSetIfChanged(ref _WorkFolder, value);
+    }
+
+    //private readonly ObservableAsPropertyHelper<bool> _ShowAllCommits;
+    //public bool ShowAllCommits => _ShowAllCommits.Value;
+
+    private bool _ShowAllCommits;
+    public bool ShowAllCommits
+    {
+        get => _ShowAllCommits;
+        set => this.RaiseAndSetIfChanged(ref _ShowAllCommits, value);
     }
 
     public ObservableCollection<Commit> Commits { get; } = new ObservableCollection<Commit>();
@@ -162,7 +183,7 @@ public class MainWindowViewModel : ReactiveObject
     {
         Commits.Clear();
 
-        var list = await Git.GetCommits(Limit, WorkFolder);
+        var list = await Git.GetCommits(Limit, ShowAllCommits, WorkFolder);
 
         foreach(var commit in list)
             Commits.Add(commit);

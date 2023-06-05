@@ -34,40 +34,49 @@
         </TabItem>
 
         <TabItem Header="List">
+            <Grid ColumnDefinitions="200, 6, *" RowDefinitions="*, 6, Auto, 6">
 
-            <!-- коммиты -->
-            <DataGrid Items="{Binding Commits}"
-                    IsReadOnly="True"
-                    CanUserSortColumns="False"
-                    CanUserReorderColumns="True"
-                    CanUserResizeColumns="True"
-                    bhv:DoubleTappedBehav.Command="{Binding ResetToCommit}"
-                    SelectedItem="{Binding SelectedCommit}">
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{Binding Head}"/>
-                    <DataGridTextColumn Header="UUID" 
-                                        Binding="{Binding UUID}" 
-                                        Width="*" />
-                    <DataGridTextColumn Header="Created" 
-                                        Binding="{Binding Created}" 
-                                        Width="*" />
-                    <DataGridTextColumn Header="Comment" 
-                                        Binding="{Binding Comment}" 
-                                        Width="5*" />
-                </DataGrid.Columns>
-            </DataGrid>
+                <!-- количество коммитов -->
+                <NumericUpDown Grid.Column="0" Grid.Row="2"
+                    Minimum="10" Maximum="100" Increment="1" Value="{Binding Limit}"
+                    VerticalAlignment="Center"
+                    ToolTip.Tip="Commits limit"
+                    />
 
+                <!-- показывать все коммиты -->
+                <CheckBox Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right"
+                    IsChecked="{Binding ShowAllCommits}">Show all commits</CheckBox>
+
+                <!-- коммиты -->
+                <DataGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
+                        Items="{Binding Commits}"
+                        IsReadOnly="True"
+                        CanUserSortColumns="False"
+                        CanUserReorderColumns="True"
+                        CanUserResizeColumns="True"
+                        bhv:DoubleTappedBehav.Command="{Binding ResetToCommit}"
+                        SelectedItem="{Binding SelectedCommit}">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Binding="{Binding Head}"/>
+                        <DataGridTextColumn Header="UUID" 
+                                            Binding="{Binding UUID}" 
+                                            Width="*" />
+                        <DataGridTextColumn Header="Created" 
+                                            Binding="{Binding Created}" 
+                                            Width="*" />
+                        <DataGridTextColumn Header="Comment" 
+                                            Binding="{Binding Comment}" 
+                                            Width="5*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
         </TabItem>
 
         <TabItem Header="Settings">
             <Grid ColumnDefinitions="Auto,6,*" RowDefinitions="Auto,Auto" ShowGridLines="False">
                 <Button Content="Set work folder..." Command="{Binding SetWorkFolderCommand}" Grid.Column="0" />
                 <TextBox Watermark="Work folder" IsReadOnly="True" Text="{Binding WorkFolder}" Grid.Column="2"/>
-                <NumericUpDown Minimum="10" Maximum="100" Increment="1" Value="{Binding Limit}"
-                       VerticalAlignment="Center"
-                       Grid.Column="0" Grid.Row="1"
-                       ToolTip.Tip="Commits limit"
-                       />
             </Grid>
         </TabItem>
     </TabControl>

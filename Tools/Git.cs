@@ -14,16 +14,17 @@ public static class Git
     const char GitLogCommitSeparator = '¶';
     const string GitLogLineSeparator = "\r\n";
     const string GitHead = "HEAD -> master";
-    const string GitLog = "git log --reflog --date-order --pretty=format:\"%h¶%an¶%ad¶%s¶%D\" -n {0}";
+    const string GitLog = "git log --date-order --pretty=format:\"%h¶%an¶%ad¶%s¶%D\" -n {0}";
+    const string GitLogAllCommits = "git log --reflog --date-order --pretty=format:\"%h¶%an¶%ad¶%s¶%D\" -n {0}";
 
-    public static async Task<IEnumerable<Commit>> GetCommits(int limit, string root)
+    public static async Task<IEnumerable<Commit>> GetCommits(int limit, bool showAllCommits, string root)
     {
         try
         {
             limit = limit <= 0 ? 1 : limit;
             limit = limit > 100 ? 100 : limit;
 
-            var cmd = string.Format(GitLog, limit);
+            var cmd = string.Format(showAllCommits ? GitLogAllCommits : GitLog, limit);
             var commits = await Cmd.Run(cmd, root);
 
             if (commits.StartsWith("Error"))
