@@ -38,7 +38,7 @@ public static class Git
                         Login = parts[1],
                         Created = parts[2],
                         Comment = parts[3],
-                        Head = parts[4] == GitHead
+                        Head = parts[4].Contains(GitHead)
                     };
                 });
         }
