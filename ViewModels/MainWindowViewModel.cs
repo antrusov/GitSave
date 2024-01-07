@@ -21,6 +21,10 @@ namespace GitSave.ViewModels;
 
 public class MainWindowViewModel : ReactiveObject
 {
+    const string notesFileName = "notes.txt";
+    const string gitignoreFileName = ".gitignore";
+    const string gitignoreContent = $"{notesFileName}";
+
     public MainWindowViewModel()
     {
         IObservable<bool> canExecuteNewCommand = this.WhenAnyValue(vm => vm.NewComment, (comment) => !string.IsNullOrEmpty(comment));
@@ -46,10 +50,20 @@ public class MainWindowViewModel : ReactiveObject
             .Subscribe(async _ => await LoadCommits());
 
         //смена рабочей папки (для подготовки "notes.txt" и ".gitignore"
-        //... this.WhenAnyValue(...)
+        this
+            .WhenAnyValue(vm => vm.WorkFolder, (folder) => Directory.Exists(folder))
+            .Throttle(TimeSpan.FromSeconds(0.8))
+            .DistinctUntilChanged()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await OnWorkFolderChanged());
 
         //обновление текстового поля и его автоматическое сохранение в notes.txt
-        //...
+        this
+            .WhenAnyValue(vm => vm.Notes)
+            .Throttle(TimeSpan.FromSeconds(0.8))
+            .DistinctUntilChanged()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await OnNotesChanged());
 
         WorkFolder = Directory.GetCurrentDirectory();
     }
@@ -204,6 +218,28 @@ public class MainWindowViewModel : ReactiveObject
             Commits.Add(commit);
 
         LastComment = await Git.LastComment(WorkFolder);
+    }
+
+    public async Task OnWorkFolderChanged()
+    {
+        var pathToGitignore = Path.Combine(WorkFolder, gitignoreFileName);
+
+        if (!File.Exists(pathToGitignore))
+            await File.WriteAllTextAsync(pathToGitignore, gitignoreContent);
+
+        var pathToNotes = Path.Combine(WorkFolder, notesFileName);
+        if (!File.Exists(pathToNotes))
+            await File.WriteAllTextAsync(pathToNotes, "write notes here!");
+
+        Notes = await File.ReadAllTextAsync(pathToNotes);
+    }
+
+    public async Task OnNotesChanged()
+    {
+        var pathToNotes = Path.Combine(WorkFolder, notesFileName);
+
+        if (File.Exists(pathToNotes))
+            await File.WriteAllTextAsync(pathToNotes, Notes);
     }
 
     #endregion
