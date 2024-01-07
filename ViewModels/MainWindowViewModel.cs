@@ -26,6 +26,7 @@ public class MainWindowViewModel : ReactiveObject
         IObservable<bool> canExecuteNewCommand = this.WhenAnyValue(vm => vm.NewComment, (comment) => !string.IsNullOrEmpty(comment));
         IObservable<bool> canExecuteUpdateCommand = this.WhenAnyValue(vm => vm.LastComment, (comment) => !string.IsNullOrEmpty(comment));
 
+        //команды для конопок
         NewCommand = ReactiveCommand.Create(OnNew, canExecuteNewCommand);
         RefreshCommand = ReactiveCommand.Create(OnRefresh);
         UpdateCommand = ReactiveCommand.Create(OnUpdate, canExecuteUpdateCommand);
@@ -33,6 +34,7 @@ public class MainWindowViewModel : ReactiveObject
         SetWorkFolderCommand = ReactiveCommand.Create(OnSetWorkFolder);
         ResetToCommit = ReactiveCommand.Create(OnResetToCommit);
 
+        //перезагрузка списка коммитов
         this
             .WhenAnyValue(
                 vm => vm.ShowAllCommits,
@@ -42,6 +44,12 @@ public class MainWindowViewModel : ReactiveObject
             .DistinctUntilChanged()
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(async _ => await LoadCommits());
+
+        //смена рабочей папки (для подготовки "notes.txt" и ".gitignore"
+        //... this.WhenAnyValue(...)
+
+        //обновление текстового поля и его автоматическое сохранение в notes.txt
+        //...
 
         WorkFolder = Directory.GetCurrentDirectory();
     }
@@ -81,6 +89,13 @@ public class MainWindowViewModel : ReactiveObject
     {
         get => _WorkFolder;
         set => this.RaiseAndSetIfChanged(ref _WorkFolder, value);
+    }
+
+    private string? _Notes;
+    public string? Notes
+    {
+        get => _Notes;
+        set => this.RaiseAndSetIfChanged(ref _Notes, value);
     }
 
     //private readonly ObservableAsPropertyHelper<bool> _ShowAllCommits;

@@ -10,7 +10,7 @@
     <TabControl>
         <TabItem Header="Save">
 
-            <Grid ColumnDefinitions="150, *" RowDefinitions="*, 6, *" Margin="0,0,0,6" ShowGridLines="False">
+            <Grid ColumnDefinitions="150, *, *" RowDefinitions="*, 6, *" Margin="0,0,0,6" ShowGridLines="False">
                 <!-- Новый коммит -->
                 <Grid RowDefinitions="*, 4, Auto"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -29,6 +29,8 @@
                 </Grid>
 
                 <TextBox Text="{Binding LastComment}" Margin="4,0,0,0" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="3" Grid.Column="1"/>
+
+                <TextBox Text="{Binding Notes}" Margin="4,0,0,0" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="0" Grid.Column="2" Grid.RowSpan="3"/>
             </Grid>
 
         </TabItem>
