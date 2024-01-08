@@ -51,7 +51,7 @@ public class MainWindowViewModel : ReactiveObject
 
         //смена рабочей папки (для подготовки "notes.txt" и ".gitignore"
         this
-            .WhenAnyValue(vm => vm.WorkFolder, (folder) => Directory.Exists(folder))
+            .WhenAnyValue(vm => vm.WorkFolder)
             .Throttle(TimeSpan.FromSeconds(0.8))
             .DistinctUntilChanged()
             .ObserveOn(RxApp.MainThreadScheduler)
@@ -224,8 +224,10 @@ public class MainWindowViewModel : ReactiveObject
     {
         var pathToGitignore = Path.Combine(WorkFolder, gitignoreFileName);
 
-        if (!File.Exists(pathToGitignore))
+        if (!File.Exists(pathToGitignore))        
             await File.WriteAllTextAsync(pathToGitignore, gitignoreContent);
+        //else
+        //TODO: add notes.txt to .gitignore
 
         var pathToNotes = Path.Combine(WorkFolder, notesFileName);
         if (!File.Exists(pathToNotes))
@@ -238,7 +240,7 @@ public class MainWindowViewModel : ReactiveObject
     {
         var pathToNotes = Path.Combine(WorkFolder, notesFileName);
 
-        if (File.Exists(pathToNotes))
+        if (File.Exists(pathToNotes) && !string.IsNullOrEmpty(Notes))
             await File.WriteAllTextAsync(pathToNotes, Notes);
     }
 
